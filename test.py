@@ -1,6 +1,8 @@
 def say(word):
-    return "You said:" + word
+    return "You said: " + word
 
-word = input()
+word = input(':')
 
 print(say(word))
+
+print("End.")
