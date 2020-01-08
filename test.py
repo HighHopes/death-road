@@ -1,5 +1,6 @@
-def hey():
-    return "Hey World!"
+def say(word):
+    return "You said:" + word
 
-print(hey())
- 
+word = input()
+
+print(say(word))
