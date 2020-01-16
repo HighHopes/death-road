@@ -189,32 +189,39 @@ a:focus, a:hover {
 }
 
 /* Project Section*/
-.projects-section {
+.story-section {
     padding: 10rem 0;
 }
-.projects-section .featured-text {
+.story-section .featured-text {
     padding: 2rem;
 }
+.story-section img{
+    filter: gray; /* IE6-9 */
+    -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+    filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
+}
 @media (min-width: 992px) {
-    .projects-section .featured-text {
+    .story-section .featured-text {
         padding: 0 0 0 2rem;
         border-left: 0.5rem solid #64a19d;
     }
+
 }
-.projects-section .project-text {
+.story-section .project-text {
     padding: 3rem;
     font-size: 90%;
 }
 @media (min-width: 992px) {
-    .projects-section .project-text {
+    .story-section .project-text {
         padding: 5rem;
     }
-    .projects-section .project-text hr {
+    .story-section .project-text hr {
         border-color: #64a19d;
         border-width: .25rem;
         width: 30%;
     }
 }
+
 
 /* SUbscription Section*/
 .subscribe-section {
