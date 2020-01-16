@@ -4,8 +4,8 @@ main = Blueprint("main", __name__)
 
 @main.route("/")
 def home():
-    return render_template("layout.html")
+    return render_template("homepage.html")
 
 @main.route("/about")
 def about():
-    return "About Page"
+    return render_template("about.html", title="About Death Road")

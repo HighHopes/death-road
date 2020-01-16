@@ -5,14 +5,14 @@
 */
 
 
-/* Main */
+/* MAIN */
 html, body{
-
     scroll-behavior: smooth;
 }
 body {
     font-family: 'Nunito';
     letter-spacing: 0.0625em;
+    background-color: #f8f8f8;
 }
 a {
     color: #64a19d;
@@ -108,6 +108,7 @@ a:focus, a:hover {
 }
 
 
+/* HOMEPAGE */
 /* Landing Page - Masthead*/
 .masthead {
     position: relative;
@@ -182,13 +183,13 @@ a:focus, a:hover {
 /* About Section*/
 .about-section {
     padding-top: 10rem;
-    background: linear-gradient(to bottom, #161616 0%, rgba(22, 22, 22, 0.9) 75%, rgba(22, 22, 22, 0.8) 100%);
+    background: linear-gradient(to bottom, #161616 0%, rgba(22, 22, 22, 0.9) 75%, rgba(22, 22, 22, 0.5) 100%);
 }
 .about-section p {
     margin-bottom: 5rem;
 }
 
-/* Project Section*/
+/* Story Section*/
 .story-section {
     padding: 10rem 0;
 }
@@ -226,11 +227,7 @@ a:focus, a:hover {
 /* SUbscription Section*/
 .subscribe-section {
     padding: 10rem 0;
-    background: linear-gradient(to bottom, rgba(22, 22, 22, 0) 0%, rgba(22, 22, 22, 0.5) 75%, #161616 100%), url("static/img/bg-signup.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    background-size: cover;
+    background: linear-gradient(to bottom, rgba(22, 22, 22, 0) 5%, rgba(22, 22, 22, 0.5) 75%, #161616 100%);
 }
 
 .subscribe-section .form-inline input {
@@ -283,9 +280,36 @@ a:focus, a:hover {
     color: #fff;
 }
 
-
-
 /* Footer Section*/
 footer {
     padding: 5rem 0;
+}
+
+/* ABOUT PAGE */
+.about-page-section .top-slider{
+    position: relative;
+    width: 100%;
+    height: 300px;
+    padding: 6rem 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("/static/img/about-slider.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.about-page-section .top-slider h1 {
+    font-family: 'Varela Round';
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    font-weight: bold;
+}
+.about-page-section .top-slider h2 {
+    font-size: 1.5rem;
+    font-style: italic;
+}
+.about-page-section .grayscale-image{
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+}
+.about-page-section .fit-image{
+    width: 100%;
+    object-fit: cover;
 }
