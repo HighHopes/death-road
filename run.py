@@ -1,6 +1,16 @@
-from hero import create_app
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from config import Config
 
-app = create_app()
+app = Flask(__name__)
+app.config.from_object(Config)
+db = SQLAlchemy(app)
+
+db.init_app(app)
+
+from main.routes import main
+
+app.register_blueprint(main)
 
 if __name__ == "__main__":
     app.run()
