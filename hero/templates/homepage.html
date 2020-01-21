@@ -105,9 +105,13 @@
                 <h2 class="text-white mb-5">Subscribe to receive updates!</h2>
 
                 <form class="form-inline d-flex">
-                    <input type="email" class="form-control flex-fill " id="inputEmail" placeholder="Enter email address...">
+                    {{ form.csrf_token }}
+                    {{ form.email(class="form-control flex-fill") }}
+                    {{ form.submit(class="btn btn-primary mx-auto my-2") }}
 
-                    <button type="submit" class="btn btn-primary mx-auto my-2">Subscribe</button>
+                    <!--<input type="email" class="form-control flex-fill " id="inputEmail" placeholder="Enter email address...">
+
+                    <button type="submit" class="btn btn-primary mx-auto my-2">Subscribe</button>-->
                 </form>
 
             </div>
