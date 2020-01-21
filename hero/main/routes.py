@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, flash, redirect, url_for
 
 from hero import db
 from hero.main.forms import SubscriptionForm
@@ -14,6 +14,8 @@ def home():
         sub = Subscription(email=form.email.data)
         db.session.add(sub)
         db.session.commit()
+
+        flash("Your email has been successfully registered!", "success")
 
     return render_template("homepage.html", title="Death Road", form=form)
 
