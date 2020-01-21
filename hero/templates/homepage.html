@@ -104,9 +104,9 @@
 
                 <h2 class="text-white mb-5">Subscribe to receive updates!</h2>
 
-                <form class="form-inline d-flex">
+                <form class="form-inline d-flex" method="POST">
                     {{ form.csrf_token }}
-                    {{ form.email(class="form-control flex-fill") }}
+                    {{ form.email(class="form-control flex-fill", placeholder="Enter email address...") }}
                     {{ form.submit(class="btn btn-primary mx-auto my-2") }}
 
                     <!--<input type="email" class="form-control flex-fill " id="inputEmail" placeholder="Enter email address...">

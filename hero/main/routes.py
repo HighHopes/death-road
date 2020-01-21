@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template
+
+from hero import db
 from hero.main.forms import SubscriptionForm
 from hero.models import Subscription
 
