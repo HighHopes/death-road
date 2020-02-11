@@ -1,3 +1,51 @@
 {% extends "layout.html" %}
+
 {% block content %}
+<div class="about-page-section">
+    <div class="top-slider">
+        <div class="container">
+            <h1>Registration</h1>
+        </div>
+    </div>
+
+    <div class="spacer py-3"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+
+            <div class="col-md-6">
+                <form class="form-singin" method="POST">
+                    <div class="form-group">
+                        <label for="Username">Username</label>
+                        <input type="username" class="form-control" placeholder="Enter username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Email">Email address</label>
+                        <input type="email" class="form-control" placeholder="Enter email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Password">Password</label>
+                        <input type="password" class="form-control" placeholder="Password">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Sing Up</button>
+                </form>
+
+                <div class="border-top mt-3 pt-3 text-center">
+                    <small class="text-muted">
+                        <p>Already have an Account? <a href="#" class="ml-2">Login</a></p>
+                    </small>
+                </div>
+            </div>
+
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+    <div class="spacer py-3"></div>
+</div>
+
 {% endblock %}
