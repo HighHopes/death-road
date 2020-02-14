@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, Email, Length, ValidationError
 
 from hero.models import User
 
+
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=3, max=32)])
     email = StringField("Email", validators=[DataRequired(), Email()])

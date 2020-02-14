@@ -10,25 +10,38 @@
 
     <div class="spacer py-3"></div>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     <div class="container">
         <div class="row">
             <div class="col-md-3"></div>
 
             <div class="col-md-6">
                 <form class="form-singin" method="POST">
-                    <div class="form-group">
-                        <label for="Username">Username</label>
-                        <input type="username" class="form-control" placeholder="Enter username">
-                    </div>
+                    {{ form.hidden_tag() }}
 
                     <div class="form-group">
-                        <label for="Email">Email address</label>
-                        <input type="email" class="form-control" placeholder="Enter email">
-                    </div>
+                        {{ form.username.label(class="form-control-label") }}
 
-                    <div class="form-group">
-                        <label for="Password">Password</label>
-                        <input type="password" class="form-control" placeholder="Password">
+                        {{ if form.username.errors }}
+                            {{ form.username(class="form-control form-control-lg is-invalid") }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {{ else }}
+                            {{ form.username(class="form-control form-control-lg") }}
+                        {{ endif }}
                     </div>
 
                     <button type="submit" class="btn btn-primary">Sing Up</button>

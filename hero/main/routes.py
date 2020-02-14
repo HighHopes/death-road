@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, render_template, flash
 
 from hero import db
 from hero.main.forms import SubscriptionForm
