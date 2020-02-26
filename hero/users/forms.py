@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Email, Length, ValidationError, EqualTo
 
 from hero.models import User
@@ -8,8 +8,8 @@ from hero.models import User
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=3, max=32)])
     email = StringField("Email", validators=[DataRequired(), Email()])
-    password = StringField("Password", validators=[DataRequired()])
-    confirm_password = StringField("Confirm Password", validators=[DataRequired(), EqualTo("password")])
+    password = PasswordField("Password", validators=[DataRequired()])
+    confirm_password = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password")])
 
     submit = SubmitField("Sing Up")
 
