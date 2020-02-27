@@ -1,13 +1,17 @@
 from hero import db, bcrypt
-from flask import Blueprint, render_template, flash
-from hero.users.forms import RegistrationForm
+from flask import Blueprint, render_template, flash, request, redirect, url_for
+from hero.users.forms import RegistrationForm, LoginForm
 from hero.models import User
+from flask_login import current_user, login_required, login_user, logout_user
 
 users = Blueprint("users", __name__)
 
 
 @users.route("/register", methods=["GET", "POST"])
 def register():
+    if current_user.is_authenticated():
+        return redirect(url_for("main.home"))
+
     form = RegistrationForm()
 
     if form.validate_on_submit():
@@ -20,3 +24,37 @@ def register():
         flash("Your account has been created. You can nou login.", "success")
 
     return render_template("register.html", title="Register", form=form)
+
+
+@users.route("/login", methods=["GET", "POST"])
+def login():
+    if current_user.is_authenticated():
+        return redirect(url_for("main.home"))
+
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user)
+
+            next = request.args.get('next')
+            return redirect(next) if next else redirect(url_for("users.account"))
+        else:
+            flash('Login Error. Please check Username and Password', "danger")
+
+    return render_template("login.html", title="Login", form=form)
+
+
+@users.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("main.home"))
+
+
+@users.route("/account")
+@login_required
+def account():
+    return render_template("account.html", title="Account")

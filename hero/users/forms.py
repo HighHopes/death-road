@@ -24,3 +24,10 @@ class RegistrationForm(FlaskForm):
 
         if email:
             raise ValidationError("E-mail is taken. Please choose another username.")
+
+
+class LoginForm(FlaskForm):
+    username = StringField("Username", validators=[DataRequired(), Length(min=3, max=32)])
+    password = PasswordField("Password", validators=[DataRequired()])
+
+    submit = SubmitField("Login")
