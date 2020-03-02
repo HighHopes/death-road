@@ -22,8 +22,12 @@ def create_app():
 
     from hero.main.routes import main
     from hero.users.routes import users
+    from hero.statistics.routes import stats
+    from hero.errors.handlers import errors
 
     app.register_blueprint(main)
     app.register_blueprint(users)
+    app.register_blueprint(stats)
+    app.register_blueprint(errors)
 
     return app
