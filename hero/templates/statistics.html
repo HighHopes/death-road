@@ -20,18 +20,12 @@
             </thead>
 
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>User_1</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>User_2</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>User_3</td>
-                </tr>
+                {% for i in all_users %}
+                    <tr>
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.username }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
 
