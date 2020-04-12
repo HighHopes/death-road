@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="about-page-section">
+<div class="statistics-section">
     <div class="top-slider">
         <div class="container"></div>
     </div>
@@ -20,10 +20,10 @@
             </thead>
 
             <tbody>
-                {% for i in all_users %}
+                {% for user in all_users %}
                     <tr>
-                        <td>{{ i.id }}</td>
-                        <td>{{ i.username }}</td>
+                        <td>{{ user.id }}</td>
+                        <td><a href="{{ url_for('users.profile', user=user.username) }}">{{ user.username }}</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

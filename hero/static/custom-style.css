@@ -224,7 +224,7 @@ a:focus, a:hover {
 }
 
 
-/* SUbscription Section*/
+/* Subscription Section*/
 .subscribe-section {
     padding: 10rem 0;
     background: linear-gradient(to bottom, rgba(22, 22, 22, 0) 5%, rgba(22, 22, 22, 0.5) 75%, #161616 100%);
@@ -285,7 +285,7 @@ footer {
     padding: 5rem 0;
 }
 
-/* ABOUT PAGE */
+/* About Page */
 .about-page-section .top-slider{
     position: relative;
     width: 100%;
@@ -312,4 +312,82 @@ footer {
 .about-page-section .fit-image{
     width: 100%;
     object-fit: cover;
+}
+
+/* Error Page*/
+.error-section .top-slider{
+    position: relative;
+    width: 100%;
+    height: 300px;
+    padding: 6rem 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("/static/img/about-slider.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Login Page*/
+.login-section .top-slider{
+    position: relative;
+    width: 100%;
+    height: 300px;
+    padding: 6rem 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("/static/img/about-slider.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.login-section .top-slider h1 {
+    font-family: 'Varela Round';
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    font-weight: bold;
+}
+
+/* Register Page*/
+.register-section .top-slider{
+    position: relative;
+    width: 100%;
+    height: 300px;
+    padding: 6rem 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("/static/img/about-slider.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.register-section .top-slider h1 {
+    font-family: 'Varela Round';
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    font-weight: bold;
+}
+
+/* Statistics Page*/
+.statistics-section .top-slider{
+    position: relative;
+    width: 100%;
+    height: 300px;
+    padding: 6rem 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("/static/img/about-slider.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Account Page*/
+.account-section .top-slider{
+    position: relative;
+    width: 100%;
+    height: 300px;
+    padding: 6rem 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("/static/img/about-slider.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Public Profile Page */
+.profile-section .top-slider{
+    position: relative;
+    width: 100%;
+    height: 300px;
+    padding: 6rem 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("/static/img/about-slider.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
 }

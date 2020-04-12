@@ -59,3 +59,10 @@ def logout():
 @login_required
 def account():
     return render_template("account.html", title="Account")
+
+
+@users.route("/profile/<string:user>")
+@login_required
+def profile(user):
+    user = User.query.get_or_404(user)
+    return render_template("profile.html", title="User Profile", user=user)
