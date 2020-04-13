@@ -16,7 +16,7 @@ def register():
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password, hidemail=0)
 
         db.session.add(user)
         db.session.commit()
@@ -61,8 +61,8 @@ def account():
     return render_template("account.html", title="Account")
 
 
-@users.route("/profile/<string:user>")
+@users.route("/profile/<string:id>")
 @login_required
-def profile(user):
-    user = User.query.get_or_404(user)
+def profile(id):
+    user = User.query.get_or_404(id)
     return render_template("profile.html", title="User Profile", user=user)

@@ -10,7 +10,8 @@
 
     <div class="container content">
         {% if current_user.is_authenticated %}
-            Welcome! You are now logged in as {{ current_user.username }}!
+            <p>Welcome! You are now logged in as {{ current_user.username }}!</p>
+            <p>View your public profile <a href="{{ url_for('users.profile', id=current_user.id) }}">here</a>.</p>
         {% endif %}
 
         <div class="spacer py-3"></div>
