@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+
+from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, ValidationError, EqualTo
 
 from hero.models import User
@@ -24,6 +25,16 @@ class RegistrationForm(FlaskForm):
 
         if email:
             raise ValidationError("E-mail is taken. Please choose another username.")
+
+
+class UpdateAccount(FlaskForm):
+    username = StringField("Username", validators=[DataRequired(), Length(min=3, max=32)])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    hidemail_checkbox = BooleanField('Make your E-mail public')
+
+    submit = SubmitField("Update")
+
+
 
 
 class LoginForm(FlaskForm):

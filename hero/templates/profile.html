@@ -11,7 +11,9 @@
     <div class="container content">
         <h1>Profile</h1>
         <p><strong>Username:</strong> {{ user.username }}</p>
-        <p><strong>E-mail:</strong> {{ user.email }}</p>
+        {% if user.hidemail == 1 %}
+            <p><strong>E-mail:</strong> {{ user.email }}</p>
+        {% endif %}
 
         <div class="spacer py-3"></div>
     </div>

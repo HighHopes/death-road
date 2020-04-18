@@ -1,4 +1,3 @@
-
 from hero import db, login_manager
 from flask_login import UserMixin
 
@@ -25,7 +24,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(32), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    hidemail = db.Column(db.Integer, nullable=True)
+    hidemail = db.Column(db.Boolean, nullable=True)
 
     def __repr__(self):
         return "Username: {}\nEmail: {}".format(self.username, self.email)

@@ -1,8 +1,9 @@
 from hero import db, bcrypt
 from flask import Blueprint, render_template, flash, request, redirect, url_for
-from hero.users.forms import RegistrationForm, LoginForm
+from hero.users.forms import RegistrationForm, LoginForm, UpdateAccount
 from hero.models import User
 from flask_login import current_user, login_required, login_user, logout_user
+from sqlalchemy.exc import IntegrityError
 
 users = Blueprint("users", __name__)
 
@@ -58,10 +59,31 @@ def logout():
 @users.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
-    return render_template("account.html", title="Account")
+    form = UpdateAccount()
+
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.hidemail = form.hidemail_checkbox.data
+
+        try:
+            db.session.commit()
+            flash("Your account has been updated.", "success")
+            redirect(url_for("users.account"))
+        except IntegrityError:
+            db.session.rollback()
+
+            flash("Username or E-mail already exists.", "danger")
+            redirect(url_for("users.account"))
+    elif request.method == "GET":
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+        form.hidemail_checkbox.data = current_user.hidemail
+
+    return render_template("account.html", title="Account", form=form)
 
 
-@users.route("/profile/<string:id>")
+@users.route("/profile/<int:id>")
 @login_required
 def profile(id):
     user = User.query.get_or_404(id)
