@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="account-section">
+    <div class="top-slider">
+        <div class="container"></div>
+    </div>
+
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} text-center">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <h1>Welcome!</h1>
+                <p>You are now logged in as <strong>{{ current_user.username }}</strong>!</p>
+                <p>View your public profile <a href="{{ url_for('users.profile', id=current_user.id) }}">here</a>.</p>
+
+                {% if get_unread_msgs > 0 %}
+                    <p><span class="text-danger">You have {{ get_unread_msgs }} new message{% if get_unread_msgs > 1 %}s{% endif %}.</span>
+                        See all unread messages <a href="{{ url_for('msgs.msg_inbox') }}?unread=true">here</a>
+                    </p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="profile-section">
+    <div class="top-slider">
+        <div class="container"></div>
+    </div>
+
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg">
+                <h2>Profile</h2>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                {% if user.hidemail == 1 %}
+                    <p><strong>E-mail:</strong> {{ user.email }}</p>
+                {% endif %}
+
+                <p><a href="{{ url_for('msgs.msg_send', to=user.username) }}" class="btn btn-outline-warning">Send Message</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

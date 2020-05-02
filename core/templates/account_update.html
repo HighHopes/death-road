@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="account-section">
+    <div class="top-slider">
+        <div class="container"></div>
+    </div>
+
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} text-center">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+
+                    <fieldset>
+                        <legend class="h3 font-weight-normal border-bottom pt-5 pb-3">Update Profile</legend>
+
+                        <div class="form-group row">
+                            {{ form.username.label(class="col-sm-2 col-form-label") }}
+
+                            {% if form.username.errors %}
+                                <div class="col-sm-4">
+                                    {{ form.username(class="form-control is-invalid") }}
+                                </div>
+
+                                <div class="invalid-feedback">
+                                    {% for error in form.username.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="col-sm-4">
+                                    {{ form.username(class="form-control") }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group row">
+                            {{ form.email.label(class="col-sm-2 col-form-label") }}
+
+                            {% if form.email.errors %}
+                                <div class="col-sm-4">
+                                    {{ form.email(class="form-control is-invalid") }}
+                                </div>
+
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="col-sm-4">
+                                    {{ form.email(class="form-control") }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend class="h5 font-weight-normal border-bottom pb-3">Account Settings</legend>
+
+                        <div class="form-group row">
+                            {{ form.hidemail_checkbox.label(class="col-sm-2 col-form-label") }}
+
+                            <div class="col-sm-6">
+                                <p>{{ form.hidemail_checkbox }}
+                                <small><i class="pl-2">Check this box to make your email public on your Profile Page</i></small></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            {{ form.msg_per_page.label(class="col-sm-2 col-form-label") }}
+
+                            {{ form.msg_per_page(class="form-control custom-select col-md-2") }}
+                        </div>
+
+                        <div class="form-group row">
+                            {{ form.submit(class="btn btn-outline-dark") }}
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

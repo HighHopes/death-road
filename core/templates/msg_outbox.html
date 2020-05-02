@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="msg_outbox-section">
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg">
+                <h2>Messages - Outbox</h2>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} text-center">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="post">
+                    {{ form.hidden_tag() }}
+
+                    {{ form.submit_del(class="btn btn-outline-danger") }}
+                    <table class="table table-hover my-5">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="col-md-7">Subject</th>
+                                <th scope="col" class="col-md-2">To</th>
+                                <th scope="col" class="col-md-2">Date Sent</th>
+                                <th scope="col" class="col-md-1"><input type="checkbox" name="select_all" onclick="toggle(this)"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for msgs_s in msgs_sent.items %}
+                            <tr>
+                                <td><a href="{{ url_for('msgs.msg_read', mid=msgs_s.mid) }}">{{ msgs_s.subject_msg }}</a></td>
+                                <td>{{ msgs_s.recipient }}</td>
+                                <td>{{ msgs_s.date.strftime("%d.%m.%Y %H:%m") }}</td>
+                                <td>{{ form.multi_del(value=msgs_s.mid) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+
+                <!-- Script for selecting all checkboxes -->
+                <script>
+                    function toggle(source){
+                        checkboxes = document.getElementsByName("multi_del");
+
+                        for(var i=0, n=checkboxes.length; i<n; i++){
+                            checkboxes[i].checked = source.checked;
+                        }
+                    }
+                </script>
+
+                <nav aria-label="pagination">
+                    <ul class="pagination">
+                        {% if msgs_sent.prev_num != None %}
+                            <li class="page-item"><a class="page-link"  href="{{ previous_page_button }}">Previous</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                        {% endif %}
+
+                        {% for page_num in msgs_sent.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                            {% if page_num %}
+                                {% if msgs_sent.page == page_num %}
+                                    <li class="page-item"><a class="page-link"  href="{{ url_for('msgs.msg_outbox', page=page_num) }}">{{ page_num }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link"  href="{{ url_for('msgs.msg_outbox', page=page_num) }}">{{ page_num }}</a></li>
+                                {% endif %}
+                            {% else %}
+                                <span class="m-2"></span>
+                            {% endif %}
+                        {% endfor %}
+
+
+                        {% if msgs_sent.next_num != None %}
+                            <li class="page-item"><a class="page-link"  href="{{ next_page_button }}">Next</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="msg_inbox-section">
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg">
+                <h2>Messages - Inbox</h2>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} text-center">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="row mt-3">
+                        {% if request.args.get("unread") %}
+                            <a href="{{ url_for('msgs.msg_inbox') }}" class="btn btn-outline-info mr-3">Show All Messages</a>
+                        {% else %}
+                            <a href="?unread=true" class="btn btn-outline-info mr-3">Show Unread Messages</a>
+                        {% endif %}
+
+                        {{ form.submit_del(class="btn btn-outline-danger") }}
+                    </div>
+
+                    <table class="table table-hover my-5">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="col-md-1"></th>
+                                <th scope="col" class="col-md-6">Subject</th>
+                                <th scope="col" class="col-md-2">From</th>
+                                <th scope="col" class="col-md-2">Date Received</th>
+                                <th scope="col" class="col-md-1"><input type="checkbox" name="select_all" onclick="toggle(this)"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for msgs_r in msgs_received.items %}
+                            <tr {% if msgs_r.seen == 0 %} class="table-warning" {% endif %}>
+                                <td>{% if msgs_r.seen == 0 %} <i class="far fa-envelope"></i> {% else %} <i class="far fa-envelope-open"></i> {% endif %}</td>
+                                <td><a href="{{ url_for('msgs.msg_read', mid=msgs_r.mid) }}">{{ msgs_r.subject_msg }}</a></td>
+                                <td>{{ msgs_r.sender }}</td>
+                                <td>{{ msgs_r.date.strftime("%d.%m.%Y %H:%m") }}</td>
+                                <td>{{ form.multi_del(value=msgs_r.mid) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+
+                <!-- Script for selecting all checkboxes -->
+                <script>
+                    function toggle(source){
+                        checkboxes = document.getElementsByName("multi_del");
+
+                        for(var i=0, n=checkboxes.length; i<n; i++){
+                            checkboxes[i].checked = source.checked;
+                        }
+                    }
+                </script>
+
+                <nav aria-label="pagination">
+                    <ul class="pagination">
+                        {% if msgs_received.prev_num != None %}
+                            <li class="page-item"><a class="page-link"  href="{{ previous_page_button }}">Previous</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                        {% endif %}
+
+                        {% for page_num in msgs_received.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                            {% if page_num %}
+                                {% if msgs_received.page == page_num %}
+                                    <li class="page-item"><a class="page-link"  href="{{ url_for('msgs.msg_inbox', page=page_num) }}">{{ page_num }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link"  href="{{ url_for('msgs.msg_inbox', page=page_num) }}">{{ page_num }}</a></li>
+                                {% endif %}
+                            {% else %}
+                                <span class="m-2"></span>
+                            {% endif %}
+                        {% endfor %}
+
+
+                        {% if msgs_received.next_num != None %}
+                            <li class="page-item"><a class="page-link"  href="{{ next_page_button }}">Next</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

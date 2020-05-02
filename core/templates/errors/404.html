@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+<div class="error-section">
+    <div class="top-slider">
+        <div class="container"></div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-12 text-center">
+                    <span class="display-1 d-block mb-3">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        404
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </span>
+                <div class="lead">The page you are looking for was not found.</div>
+                <div class="mb-3 lead">Please try a different location.</div>
+                <a href="{{ url_for('main.home') }}" class="btn btn-link">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

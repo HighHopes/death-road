@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="msg_read-section">
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg">
+                <h2>Messages - Read</h2>
+
+                {% if msg_read.recipient == current_user.username %}
+                    <a class="btn btn-outline-success my-3" href="{{ url_for('msgs.msg_inbox') }}">Return to Inbox</a>
+                {% else %}
+                    <a class="btn btn-outline-success my-3" href="{{ url_for('msgs.msg_outbox') }}">Return to Outbox</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row pt-3">
+            <div class="col-md-2">
+                From:
+            </div>
+
+            <div class="col-md-10">
+                <strong>{{ msg_read.sender }}</strong>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                To:
+            </div>
+
+            <div class="col-md-10">
+                <strong>{{ msg_read.recipient }}</strong>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                Date sent:
+            </div>
+
+            <div class="col-md-10">
+                <strong>{{ msg_read.date.strftime("%d.%m.%Y %H:%m") }}</strong>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                Subject:
+            </div>
+
+            <div class="col-md-10">
+                <strong>{{ msg_read.subject_msg }}</strong>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <hr class="w-50 mx-0">
+                {{ msg_read.body_msg }}
+            </div>
+        </div>
+
+        <div class="row pt-5">
+            <div class="col">
+                <form method="post">
+                    {{ form.hidden_tag() }}
+
+                    {% if msg_read.recipient == current_user.username %}
+                        <a href="{{ url_for('msgs.msg_update', mid=msg_read.mid) }}" class="btn btn-outline-primary">Mark as Unread</a>
+                    {% endif %}
+
+                    {% if msg_read.sender != current_user.username %}
+                        <a href="{{ url_for('msgs.msg_send', to=msg_read.sender) }}" class="btn btn-outline-warning">Reply</a>
+                    {% endif %}
+
+                    {{ form.submit_del(class="btn btn-outline-danger") }}
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

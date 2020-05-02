@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="statistics-section">
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg">
+                <h2>Statistics</h2>
+
+                <table class="table table-hover">
+                    <thead style="font-weight: bold">
+                        <tr>
+                            <td class="col-sm-1">ID</td>
+                            <td class="col-sm-11">Username</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for user in all_users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td><a href="{{ url_for('users.profile', id=user.id) }}">{{ user.username }}</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
