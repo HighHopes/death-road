@@ -3,3 +3,5 @@ venv
 venv-deathroad
 .idea/
 ini.txt
+
+deathroad_backup.db
