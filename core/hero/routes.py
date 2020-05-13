@@ -9,6 +9,8 @@ from core.models import Hero
 from core.hero.forms import CreateHeroForm, ReviveHeroForm
 from core.hero.utils import acc_has_hero, hp_regeneration, revive_hero
 
+from core.utils.unread_msgs import unread_msgs
+
 from datetime import datetime
 
 hero = Blueprint("hero", __name__)
@@ -26,6 +28,9 @@ def hero_home():
     # If FALSE redirect user to create a hero
     if acc_has_hero(current_user.id):
         return redirect(url_for("hero.hero_create"))
+
+    # Get the number of unread messages
+    get_unread_msgs = unread_msgs(current_user.username)
 
     # Get the Hero from DB. Needed for overview page to list Hero details
     hero = Hero.query.filter_by(acc_id=current_user.id).first()
@@ -51,7 +56,7 @@ def hero_home():
         hero.alive = 1
         db.session.commit()
 
-    return render_template("hero_home.html", hero=hero, form=form)
+    return render_template("hero_home.html", hero=hero, form=form, get_unread_msgs=get_unread_msgs)
 
 
 @hero.route("/hero/create", methods=["POST", "GET"])
@@ -67,6 +72,9 @@ def hero_create():
         return redirect(url_for("hero.hero_home"))
 
     form = CreateHeroForm()
+
+    # Get the number of unread messages
+    get_unread_msgs = unread_msgs(current_user.username)
 
     if form.validate_on_submit():
         try:
@@ -95,7 +103,7 @@ def hero_create():
             flash("`" + form.h_name.data + "` already exists. Please choose another name for your hero.", "warning")
             return redirect(url_for("hero.hero_create"))
 
-    return render_template("hero_create.html", form=form)
+    return render_template("hero_create.html", form=form, get_unread_msgs=get_unread_msgs)
 
 
 @hero.route("/hero/delete")
@@ -124,6 +132,9 @@ def hero_training():
     if acc_has_hero(current_user.id):
         return redirect(url_for("hero.hero_create"))
 
+    # Get the number of unread messages
+    get_unread_msgs = unread_msgs(current_user.username)
+
     # Regenerate HP of hero if it is lower then hp_max
     hp_regeneration(current_user.id)
 
@@ -134,4 +145,4 @@ def hero_training():
     if hero.alive == 1:
         revive_hero(current_user.id)
 
-    return render_template("hero_training.html", hero=hero)
+    return render_template("hero_training.html", hero=hero, get_unread_msgs=get_unread_msgs)

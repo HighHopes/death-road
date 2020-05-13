@@ -4,7 +4,8 @@ from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy.exc import IntegrityError
 
 from core import db, bcrypt
-from core.models import User, Messages
+from core.models import User
+from core.utils.unread_msgs import unread_msgs
 
 from core.users.forms import RegistrationForm, LoginForm, UpdateAccount
 
@@ -68,8 +69,9 @@ def logout():
 @users.route("/account")
 @login_required
 def account_home():
-    get_unread_msgs = Messages.query.filter_by(recipient=current_user.username, del_in=False, seen=False).count()
 
+    # Get the number of unread messages
+    get_unread_msgs = unread_msgs(current_user.username)
     return render_template("account_home.html", get_unread_msgs=get_unread_msgs)
 
 
@@ -77,6 +79,9 @@ def account_home():
 @login_required
 def account_update():
     form = UpdateAccount()
+
+    # Get the number of unread messages
+    get_unread_msgs = unread_msgs(current_user.username)
 
     if form.validate_on_submit():
         current_user.username = form.username.data
@@ -99,11 +104,15 @@ def account_update():
         form.hidemail_checkbox.data = current_user.hidemail
         form.msg_per_page.data = current_user.msg_per_page
 
-    return render_template("account_update.html", form=form)
+    return render_template("account_update.html", form=form, get_unread_msgs=get_unread_msgs)
 
 
 @users.route("/profile/<int:id>")
 @login_required
 def profile(id):
     user = User.query.get_or_404(id)
-    return render_template("profile.html", user=user)
+
+    # Get the number of unread messages
+    get_unread_msgs = unread_msgs(current_user.username)
+
+    return render_template("profile.html", user=user, get_unread_msgs=get_unread_msgs)

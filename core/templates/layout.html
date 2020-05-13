@@ -57,7 +57,7 @@
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Messages
+                                Messages {% if get_unread_msgs > 0 %}({{ get_unread_msgs }}){% endif %}
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="messagesDropdown">

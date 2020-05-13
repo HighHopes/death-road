@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 from core import db
 from core.models import Messages, User
 from core.messages.forms import SendMessageForm, DeleteSingleMessageButton, MessageMultipleDelete
+from core.utils.unread_msgs import unread_msgs
 
 from datetime import datetime
 
@@ -20,6 +21,9 @@ def msg_inbox():
     # Get Inbox Messages and Paginate them
     page = request.args.get("page", 1, type=int)
     msg_per_page = User.query.get_or_404(current_user.id)
+
+    # Get the number of unread messages
+    get_unread_msgs = unread_msgs(current_user.username)
 
     if request.args and request.args.get("unread") == "true":
         unread_msg_count = Messages.query. \
@@ -64,7 +68,8 @@ def msg_inbox():
                            msgs_received=msgs_received,
                            next_page_button=next_page_button,
                            previous_page_button=previous_page_button,
-                           form=form)
+                           form=form,
+                           get_unread_msgs=get_unread_msgs)
 
 
 @msgs.route("/msg_outbox", methods=["POST", "GET"])
@@ -76,6 +81,9 @@ def msg_outbox():
 
     page = request.args.get("page", 1, type=int)
     msg_per_page = User.query.get_or_404(current_user.id)
+
+    # Get the number of unread messages
+    get_unread_msgs = unread_msgs(current_user.username)
 
     msgs_sent = Messages.query. \
         order_by(Messages.date.desc()). \
@@ -107,7 +115,7 @@ def msg_outbox():
         return redirect(url_for("msgs.msg_outbox"))
 
     return render_template("msg_outbox.html", msgs_sent=msgs_sent, next_page_button=next_page_button,
-                           previous_page_button=previous_page_button, form=form)
+                           previous_page_button=previous_page_button, form=form, get_unread_msgs=get_unread_msgs)
 
 
 @msgs.route("/msg_read/<int:mid>", methods=["POST", "GET"])
@@ -122,6 +130,9 @@ def msg_read(mid):
     :param mid: current message ID
     :return:
     """
+
+    # Get the number of unread messages
+    get_unread_msgs = unread_msgs(current_user.username)
 
     try:
         # get the current message from inbox or outbox and if not deleted
@@ -158,9 +169,11 @@ def msg_read(mid):
 
                 return redirect(url_for("msgs.msg_outbox"))
 
-        return render_template("msg_read.html", msg_read=m_read, form=form)
+        return render_template("msg_read.html", msg_read=m_read, form=form, get_unread_msgs=get_unread_msgs)
     except AttributeError:
-        return render_template("errors/404.html")
+        # Get the number of unread messages
+        get_unread_msgs = unread_msgs(current_user.username)
+        return render_template("errors/404.html", get_unread_msgs=get_unread_msgs)
 
 
 @msgs.route("/msg_send", methods=["POST", "GET"])
@@ -173,6 +186,9 @@ def msg_send():
     """
 
     form = SendMessageForm()  # Get the current Send Message Form
+
+    # Get the number of unread messages
+    get_unread_msgs = unread_msgs(current_user.username)
 
     if form.validate_on_submit():
         try:
@@ -198,7 +214,7 @@ def msg_send():
             # Get error if username is invalid or does not exist
             flash("Username " + form.send_to.data + " not found.", "danger")
 
-    return render_template("msg_send.html", form=form)
+    return render_template("msg_send.html", form=form, get_unread_msgs=get_unread_msgs)
 
 
 @msgs.route("/msg_<int:mid>/update", methods=["POST", "GET"])
