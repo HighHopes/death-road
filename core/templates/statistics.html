@@ -10,24 +10,31 @@
                 <table class="table table-hover">
                     <thead style="font-weight: bold">
                         <tr>
-                            <td class="col-sm-1">ID</td>
-                            <td class="col-sm-11">Username</td>
+                            <th class="col-md-1">ID</th>
+                            <th class="col-sm-2">Username</th>
+                            <th class="col-sm-2">Hero Name</th>
+                            <th class="col-sm-2">Hero Level</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {% for user in all_users %}
-                            <tr>
-                                <td>{{ user.id }}</td>
-                                <td><a href="{{ url_for('users.profile', id=user.id) }}">{{ user.username }}</a></td>
-                            </tr>
-                        {% endfor %}
+                    {% for stat in stats %}
+                        <tr>
+                            <td>{{ stat[0].id }}</td>
+                            <td>{{ stat[0].username }}</td>
+                        {% if stat[1] == None %}
+                            <td>-</td>
+                            <td>-</td>
+                        {% else %}
+                            <td>{{ stat[1].name }}</td>
+                            <td>{{ stat[1].level }}</td>
+                        {% endif %}
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </section>
-
-
 {% endblock %}

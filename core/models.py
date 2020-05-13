@@ -17,9 +17,6 @@ class Subscription(db.Model):
     id = Column(Integer, primary_key=True)  # email ID
     email = Column(String(120), unique=True, nullable=False)  # email from subscription
 
-    def __repr__(self):
-        return "Email: {}".format(self.email)
-
 
 class User(db.Model, UserMixin):
     """
@@ -34,9 +31,6 @@ class User(db.Model, UserMixin):
     password = Column(String(60), nullable=False)  # hashed password
     hidemail = Column(Boolean, nullable=True)  # 0/1 Hide/Show email in public profile
     msg_per_page = Column(Integer, nullable=False)  # get how many messages to show on inbox/outbox page
-
-    def __repr__(self):
-        return "Username: {}\nEmail: {}".format(self.username, self.email)
 
 
 class Messages(db.Model):
@@ -55,20 +49,6 @@ class Messages(db.Model):
     del_in = Column(Boolean)  # del_in - delete message from inbox
     del_out = Column(Boolean)  # del_out - delete message from outbox
 
-    def __repr__(self):
-        return "MsgID: {}\n" \
-               "SenderID: {}\n" \
-               "RecipientID: {}\n" \
-               "Subject: {}\n" \
-               "Msg Text: {}\n" \
-               "Date sent: -". \
-            format(self.mid,
-                   self.sender,
-                   self.recipient,
-                   self.subject_msg,
-                   self.body_msg,
-                   self.date)
-
 
 class Hero(db.Model):
     """
@@ -77,21 +57,15 @@ class Hero(db.Model):
 
     __tablename__ = "hero"
 
-    id = Column(Integer, primary_key=True)  # unique ID
-    acc_id = Column(Integer)  # hero id connected to account id
-    name = Column(String(32))  # name of the hero
+    acc_id = Column(Integer, primary_key=True)  # hero id connected to account id
+    name = Column(String(16), unique=True)  # name of the hero
     gender = Column(Boolean)  # 0 - male / 1 - female
     date_created = Column(DateTime)  # date created the hero
     level = Column(Integer)  # current level of the hero
     current_exp = Column(Integer)  # current experience of hero
     next_lvl_exp = Column(Integer)  # exp needed for next level
     health = Column(Integer)  # current hero health HP
+    max_health = Column(Integer)  # current hero health HP
+    hp_regen_rate = Column(Integer)  # hp regeneration per second
+    hp_check_regen = Column(DateTime)  # used to calculate the regenerated hp over time
     attack_point = Column(Integer)  # attack points needed to calculate damage
-    damage = Column(Integer)  # actual damage of the hero
-    hp_regeneration_rate = Column(Integer)  # hp regeneration per second
-
-    def __repr__(self):
-        return "acc_id: {}, name: {}, level: {}, exp: {}, health: {}, attack_pct: {}, hp_regen: {}".\
-            format(self.acc_id, self.name, self.level, self.current_exp, self.health,
-                   self.attack_point, self.hp_regeneration_rate)
-

@@ -1,5 +1,7 @@
+.idea/
 *.pyc
 venv
 venv-deathroad
-.idea/
+
 ini.txt
+models_backup.py

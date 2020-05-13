@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template
 from flask_login import login_required
 
-from core.models import User
+from core import db
+from core.models import User, Hero
 
 stats = Blueprint("stats", __name__)
 
@@ -9,6 +10,6 @@ stats = Blueprint("stats", __name__)
 @stats.route("/statistics")
 @login_required
 def statistics():
-    all_users = User.query.all()
+    stats = db.session.query(User, Hero).outerjoin(Hero, User.id == Hero.acc_id)
 
-    return render_template("statistics.html", all_users=all_users)
+    return render_template("statistics.html", stats=stats)
