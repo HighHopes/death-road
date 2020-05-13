@@ -45,14 +45,34 @@ def hp_regeneration(current_acc_id):
 
     regen = Hero.query.filter_by(acc_id=current_acc_id).first()
 
-    if regen.health < regen.max_health:
+    if regen.alive == 2 and regen.hp < regen.hp_max:
         time_passed = deltatime(datetime.now(), regen.hp_check_regen)
 
         if time_passed > 4:
-            regen.health += time_passed * regen.hp_regen_rate
+            regen.hp += time_passed * regen.hp_regen_rate
 
-            if regen.health > regen.max_health:
-                regen.health = regen.max_health
+            if regen.hp > regen.hp_max:
+                regen.hp = regen.hp_max
 
             regen.hp_check_regen = datetime.now()
             db.session.commit()
+
+
+def revive_hero(current_acc_id):
+    """
+    If current status of the hero is Reviving (1) then it calculates the time needed to revive the hero.
+    After the Hero is revived, the HP it is set to full.
+
+    Can be set a base value from database or hardcoded. At the moment, for testing purposes it is set for 10 seconds.
+
+    :param current_acc_id:  gets the current id for the account [current_user.id]
+    :return:
+    """
+    revive = Hero.query.filter_by(acc_id=current_acc_id).first()
+
+    time_passed = deltatime(datetime.now(), revive.death_check)
+
+    if time_passed > 9:
+        revive.alive = 2
+        revive.hp = revive.hp_max
+        db.session.commit()

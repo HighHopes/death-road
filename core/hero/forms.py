@@ -8,3 +8,8 @@ class CreateHeroForm(FlaskForm):
     h_gender = RadioField("Choose gender", choices=[(0, "Male"), (1, "Female")], coerce=int, default=0)
 
     submit = SubmitField("Create")
+
+
+class ReviveHeroForm(FlaskForm):
+    h_revive = SubmitField("Revive Hero")
+    h_kill = SubmitField("Kill Hero")

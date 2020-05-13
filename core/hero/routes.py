@@ -6,16 +6,16 @@ from sqlalchemy.exc import IntegrityError
 from core import db
 from core.models import Hero
 
-from core.hero.forms import CreateHeroForm
-from core.hero.utils import acc_has_hero, hp_regeneration
+from core.hero.forms import CreateHeroForm, ReviveHeroForm
+from core.hero.utils import acc_has_hero, hp_regeneration, revive_hero
 
 from datetime import datetime
 
 hero = Blueprint("hero", __name__)
 
 
-@hero.route("/hero/")
-@hero.route("/hero/overview")
+@hero.route("/hero/", methods=["POST", "GET"])
+@hero.route("/hero/overview", methods=["POST", "GET"])
 @login_required
 def hero_home():
     """
@@ -27,13 +27,31 @@ def hero_home():
     if acc_has_hero(current_user.id):
         return redirect(url_for("hero.hero_create"))
 
-    # Regenerate HP of hero if it is lower then hp_max
-    hp_regeneration(current_user.id)
-
     # Get the Hero from DB. Needed for overview page to list Hero details
     hero = Hero.query.filter_by(acc_id=current_user.id).first()
 
-    return render_template("hero_home.html", hero=hero)
+    # Regenerate HP of hero if it is lower then hp_max
+    hp_regeneration(current_user.id)
+
+    # Reviving Hero if it is in state of reviving
+    if hero.alive == 1:
+        revive_hero(current_user.id)
+
+    # Revive and Kill Hero Form
+    # Kill hero is just for testing purposes
+    form = ReviveHeroForm()
+
+    if form.h_kill.data and form.validate_on_submit():
+        hero.hp = 0
+        hero.alive = 0
+        db.session.commit()
+
+    if form.h_revive.data and form.validate_on_submit():
+        hero.death_check = datetime.now()
+        hero.alive = 1
+        db.session.commit()
+
+    return render_template("hero_home.html", hero=hero, form=form)
 
 
 @hero.route("/hero/create", methods=["POST", "GET"])
@@ -60,10 +78,12 @@ def hero_create():
                 level=1,
                 current_exp=0,
                 next_lvl_exp=100,
-                health=100,
-                max_health=100,
+                hp=100,
+                hp_max=100,
                 hp_regen_rate=1,
                 hp_check_regen=datetime.now(),
+                alive=2,
+                death_check=datetime.now(),
                 attack_point=5)
 
             db.session.add(hero_obj)
@@ -109,5 +129,9 @@ def hero_training():
 
     # Get the Hero from DB. Needed for stats page to list Hero hero vital infos
     hero = Hero.query.filter_by(acc_id=current_user.id).first()
+
+    # Reviving Hero if it is in state of reviving
+    if hero.alive == 1:
+        revive_hero(current_user.id)
 
     return render_template("hero_training.html", hero=hero)

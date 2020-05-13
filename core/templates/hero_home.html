@@ -37,8 +37,20 @@
                     </tr>
 
                     <tr>
+                        <th scope="row">Status</th>
+
+                        {% if hero.alive == 2 %}
+                        <td class="text-success">Alive</td>
+                        {% elif hero.alive == 1 %}
+                        <td class="text-warning">Reviving</td>
+                        {% else %}
+                        <td class="text-danger">Dead</td>
+                        {% endif %}
+                    </tr>
+
+                    <tr>
                         <th scope="row">Current Health</th>
-                        <td>{{ hero.health }}/{{ hero.max_health }}</td>
+                        <td>{{ hero.hp }}/{{ hero.hp_max }}</td>
                     </tr>
 
                     <tr>
@@ -59,6 +71,19 @@
                     <tr>
                         <th scope="row">Health Regeneration Rate (HP/sec)</th>
                         <td>{{ hero.hp_regen_rate }}</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <form method="post">
+                                {{ form.hidden_tag() }}
+                                {% if hero.alive == 2 %}
+                                {{ form.h_kill(class="btn btn-outline-warning btn-lg btn-block") }}
+                                {% elif hero.alive == 0 %}
+                                {{ form.h_revive(class="btn btn-outline-success btn-lg btn-block") }}
+                                {% endif %}
+                            </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>

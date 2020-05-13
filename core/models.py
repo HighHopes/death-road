@@ -64,8 +64,10 @@ class Hero(db.Model):
     level = Column(Integer)  # current level of the hero
     current_exp = Column(Integer)  # current experience of hero
     next_lvl_exp = Column(Integer)  # exp needed for next level
-    health = Column(Integer)  # current hero health HP
-    max_health = Column(Integer)  # current hero health HP
+    hp = Column(Integer)  # current hero health HP
+    hp_max = Column(Integer)  # current hero health HP
     hp_regen_rate = Column(Integer)  # hp regeneration per second
     hp_check_regen = Column(DateTime)  # used to calculate the regenerated hp over time
+    alive = Column(Integer)  # Check if hero is Death (0), Reviving (1), Alive (2)
+    death_check = Column(DateTime)  # Time when the hero was revived
     attack_point = Column(Integer)  # attack points needed to calculate damage
