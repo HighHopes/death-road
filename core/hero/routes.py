@@ -12,6 +12,7 @@ from core.hero.utils import acc_has_hero, hp_regeneration, revive_hero
 from core.utils.unread_msgs import unread_msgs
 
 from datetime import datetime, timedelta
+from random import randint
 
 hero = Blueprint("hero", __name__)
 
@@ -57,7 +58,7 @@ def hero_home():
         db.session.commit()
 
     # Time when the hero is alive again
-    reviving_time = hero.death_check + timedelta(seconds=10)
+    reviving_time = hero.death_check + timedelta(seconds=hero.revive_time)
 
     return render_template("hero_home.html", hero=hero, form=form, get_unread_msgs=get_unread_msgs,
                            reviving_time=reviving_time)
@@ -96,6 +97,7 @@ def hero_create():
                 hp_check_regen=datetime.now(),
                 alive=2,
                 death_check=datetime.now(),
+                revive_time=10,
                 attack_point=5)
 
             db.session.add(hero_obj)
@@ -150,11 +152,13 @@ def hero_training():
         revive_hero(current_user.id)
 
     # Time when the hero is alive again
-    reviving_time = hero.death_check + timedelta(seconds=10)
-    return render_template("hero_training.html", hero=hero, get_unread_msgs=get_unread_msgs, reviving_time=reviving_time)
+    reviving_time = hero.death_check + timedelta(seconds=hero.revive_time)
+
+    return render_template("hero_training.html", hero=hero, get_unread_msgs=get_unread_msgs,
+                           reviving_time=reviving_time)
 
 
-@hero.route("/hero/training/level_<int:id>")
+@hero.route("/hero/training/lvl_<int:id>")
 @login_required
 def train(id):
     """
@@ -172,7 +176,53 @@ def train(id):
     # Get the Hero from DB. Needed for stats page to list Hero hero vital infos
     hero = Hero.query.filter_by(acc_id=current_user.id).first()
 
-    # Get the animal for the current training level
-    animal = AnimalsTraining.query.get_or_404(id).first()
+    if hero.hp == 0:
+        return redirect(url_for("hero.hero_home"))
 
-    return render_template("hero_train.html", animal=animal, get_unread_msgs=get_unread_msgs)
+    # Get the animal for the current training level
+    animal = AnimalsTraining.query.get_or_404(id)
+
+    # The Process of fighting - 1st try
+    # __________________________________________________ #
+
+    output = []  # output messages
+
+    # Creating variables for the fight
+    hero_hp = hero.hp
+    animal_hp = animal.hp
+
+    while True:
+        hero_dmg = randint(round(hero.attack_point * 0.5), round(hero.attack_point * 1.25))
+
+        animal_hp -= hero_dmg
+        if animal_hp <= 0:
+            out = "The Hero hit The Animal with " + str(hero_dmg) + " dmg. The Animal is DEAD. Hero WON this battle."
+            output.append(out)
+
+            break
+        else:
+            out = "Hero hit the Animal with " + str(hero_dmg) + ". Animal HP is " + str(animal_hp)
+            output.append(out)
+
+        animal_dmg = randint(round(animal.attack_point * 0.5), round(animal.attack_point * 1.25))
+        hero_hp -= animal_dmg
+        if hero_hp <= 0:
+            out = "The Animal hit the Hero with " + str(animal_dmg) + " dmg. Hero is DEAD. The Animal won this battle."
+            output.append(out)
+
+            break
+        else:
+            out = "Animal hit the Hero with " + str(animal_dmg) + ". Hero HP is " + str(hero_hp)
+            output.append(out)
+
+    if hero_hp <= 0:
+        hero.hp = 0
+        hero.alive = 0
+    else:
+        hero.hp_check_regen = datetime.now()
+        hero.hp = hero_hp
+        hero.current_exp += animal.exp_given
+
+    db.session.commit()
+
+    return render_template("hero_train.html", animal=animal, hero=hero, get_unread_msgs=get_unread_msgs, output=output)
