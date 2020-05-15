@@ -5,7 +5,12 @@
     <h4>Training Zone</h4>
 
     <div class="row mt-5">
-
+        <div class="col">
+            {% for out in output %}
+                {{ out }}
+            <br>
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% include "hero_stats.html" %}

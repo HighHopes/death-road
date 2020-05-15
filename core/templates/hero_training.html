@@ -3,10 +3,22 @@
 {% block hero_main %}
 <div class="col-lg-8">
     <h4>Training Zone</h4>
+    {% if hero.alive == 0 or hero.alive == 1 %}
+    <div class="row pt-5 pb-3">
+        <div class="col">
+            <h5>Your hero is currently dead.</h5>
+        </div>
+    </div>
+    {% else %}
+    <div class="row pt-5 pb-3">
+        <div class="col">
+            <h5>Choose your training program:</h5>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col">
-            <div class="list-group list-group-horizontal py-5 text-center" id="list-tab" role="tablist">
+            <div class="list-group list-group-horizontal pb-5 text-center" id="list-tab" role="tablist">
                 <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
                    href="#list-home" role="tab" aria-controls="home"><strong>Train Animal</strong><br> Level 1</a>
 
@@ -27,7 +39,7 @@
                     <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
                         the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
                         of type and scrambled it to make a type specimen book.</p>
-                    <input type="submit" class="btn btn-outline-info" name="training-1" value="Start Training">
+                    <a href="{{ url_for('hero.train', id=1) }}" class="btn btn-outline-info">Start Training</a>
                 </div>
 
                 <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
@@ -37,7 +49,7 @@
                         atin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin
                         words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in
                         classical literature, discovered the undoubtable source.</p>
-                    <input type="submit" class="btn btn-outline-info" name="training-2" value="Start Training">
+                    <a href="{{ url_for('hero.train', id=2) }}" class="btn btn-outline-info">Start Training</a>
                 </div>
 
                 <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
@@ -46,12 +58,12 @@
                         when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
                         distribution of letters, as opposed to using 'Content here, content here', making it look like
                         readable English.</p>
-                    <input type="submit" class="btn btn-outline-info" name="training-3" value="Start Training">
+                    <a href="{{ url_for('hero.train', id=3) }}" class="btn btn-outline-info">Start Training</a>
                 </div>
             </div>
         </div>
     </div>
-
+    {% endif %}
 </div>
 {% include "hero_stats.html" %}
 {% endblock %}

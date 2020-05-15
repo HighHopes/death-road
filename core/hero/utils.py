@@ -72,7 +72,7 @@ def revive_hero(current_acc_id):
 
     time_passed = deltatime(datetime.now(), revive.death_check)
 
-    if time_passed > 9:
+    if time_passed >= revive.revive_time:
         revive.alive = 2
         revive.hp = revive.hp_max
         db.session.commit()
