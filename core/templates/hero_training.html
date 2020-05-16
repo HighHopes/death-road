@@ -23,14 +23,14 @@
         </div>
     </div>
 
-
-
     <div class="row">
         <div class="col">
             <div class="list-group list-group-horizontal pb-5 text-center" id="list-tab" role="tablist">
                 {% for animal in animals %}
                 <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
-                   href="#animal-{{ animal.name }}" role="tab" aria-controls="home"><strong>{{ animal.name }}</strong><br> Level {{ animal.id }}</a>
+                   href="#animal-{{ animal.name }}" role="tab" aria-controls="home">
+                    <strong>{{ animal.name }}</strong><br> Level {{ animal.id }}
+                </a>
                 {% endfor %}
             </div>
         </div>
