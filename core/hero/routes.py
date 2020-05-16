@@ -147,6 +147,9 @@ def hero_training():
     # Get the Hero from DB. Needed for stats page to list Hero hero vital infos
     hero = Hero.query.filter_by(acc_id=current_user.id).first()
 
+    # Get all animals for the training section
+    animals = AnimalsTraining.query.all()
+
     # Reviving Hero if it is in state of reviving
     if hero.alive == 1:
         revive_hero(current_user.id)
@@ -154,7 +157,7 @@ def hero_training():
     # Time when the hero is alive again
     reviving_time = hero.death_check + timedelta(seconds=hero.revive_time)
 
-    return render_template("hero_training.html", hero=hero, get_unread_msgs=get_unread_msgs,
+    return render_template("hero_training.html", hero=hero, animals=animals, get_unread_msgs=get_unread_msgs,
                            reviving_time=reviving_time)
 
 
@@ -192,27 +195,34 @@ def train(id):
     animal_hp = animal.hp
 
     while True:
-        hero_dmg = randint(round(hero.attack_point * 0.5), round(hero.attack_point * 1.25))
+        hero_dmg = randint(round(hero.attack_point * 0.5), round(hero.attack_point * 1.26))
 
         animal_hp -= hero_dmg
         if animal_hp <= 0:
-            out = "The Hero hit The Animal with " + str(hero_dmg) + " dmg. The Animal is DEAD. Hero WON this battle."
+            out = hero.name + " hit " + animal.name + " with " + str(
+                hero_dmg) + " dmg. " + animal.name + "  is DEAD. " + hero.name + " WON this battle."
             output.append(out)
+
+            # random experience gained from battle based on the value from db
+            exp = randint(round(animal.exp_given * 0.76), round(animal.exp_given * 1.26))
 
             break
         else:
-            out = "Hero hit the Animal with " + str(hero_dmg) + ". Animal HP is " + str(animal_hp)
+            out = hero.name + " hit " + animal.name + " with " + str(hero_dmg) + ". " + animal.name + " HP is " + str(animal_hp)
             output.append(out)
 
-        animal_dmg = randint(round(animal.attack_point * 0.5), round(animal.attack_point * 1.25))
+        animal_dmg = randint(round(animal.attack_point * 0.5), round(animal.attack_point * 1.26))
         hero_hp -= animal_dmg
         if hero_hp <= 0:
-            out = "The Animal hit the Hero with " + str(animal_dmg) + " dmg. Hero is DEAD. The Animal won this battle."
+            out = animal.name + " hit " + hero.name + " with " + str(animal_dmg) + " dmg. " + hero.name + " is DEAD. " + animal.name + " won this battle."
             output.append(out)
+
+            # if hero is dead 0 exp will gain from battle
+            exp = 0
 
             break
         else:
-            out = "Animal hit the Hero with " + str(animal_dmg) + ". Hero HP is " + str(hero_hp)
+            out = animal.name + " hit " + hero.name + " with " + str(animal_dmg) + ". " + hero.name + " HP is " + str(hero_hp)
             output.append(out)
 
     if hero_hp <= 0:
@@ -221,8 +231,8 @@ def train(id):
     else:
         hero.hp_check_regen = datetime.now()
         hero.hp = hero_hp
-        hero.current_exp += animal.exp_given
+        hero.current_exp += exp
 
     db.session.commit()
 
-    return render_template("hero_train.html", animal=animal, hero=hero, get_unread_msgs=get_unread_msgs, output=output)
+    return render_template("hero_train.html", animal=animal, hero=hero, get_unread_msgs=get_unread_msgs, output=output, exp=exp)

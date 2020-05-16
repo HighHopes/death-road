@@ -83,6 +83,7 @@ class AnimalsTraining(db.Model):
 
     id = Column(Integer, primary_key=True)  # animal ID
     name = Column(String(32))  # animal name
+    description = Column(Text)  # short description for the animal
     hp = Column(Integer)  # HP of the animal
     attack_point = Column(Integer)  # attack points of the animal
     exp_given = Column(Integer)  # experience given to the hero when animal is dead
