@@ -3,7 +3,7 @@
 
     <div class="row py-3">
         <div class="col">
-            <h5>Server Time:</h5>
+            <h5>Local Time:</h5>
             <div id="timeNow"></div>
         </div>
     </div>
@@ -28,6 +28,11 @@
     <div class="row">
         <div class="col-4">EXP:</div>
         <div class="col-8">{{ hero.current_exp }}/{{ hero.next_lvl_exp }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-4">Damage:</div>
+        <div class="col-8">{{ (hero.attack_point * 0.5)|round|int }}-{{ (hero.attack_point * 1.26)|round|int }}</div>
     </div>
 
     {% if hero.alive == 1 %}

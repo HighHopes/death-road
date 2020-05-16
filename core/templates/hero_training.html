@@ -3,10 +3,17 @@
 {% block hero_main %}
 <div class="col-lg-8">
     <h4>Training Zone</h4>
-    {% if hero.alive == 0 or hero.alive == 1 %}
+
+    {% if hero.alive == 0 %}
     <div class="row pt-5 pb-3">
         <div class="col">
             <h5>Your hero is currently dead.</h5>
+        </div>
+    </div>
+    {% elif hero.alive == 1 %}
+    <div class="row pt-5 pb-3">
+        <div class="col">
+            <h5>Your hero is currently reviving. Wait...</h5>
         </div>
     </div>
     {% else %}
@@ -16,17 +23,15 @@
         </div>
     </div>
 
+
+
     <div class="row">
         <div class="col">
             <div class="list-group list-group-horizontal pb-5 text-center" id="list-tab" role="tablist">
+                {% for animal in animals %}
                 <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
-                   href="#list-home" role="tab" aria-controls="home"><strong>Train Animal</strong><br> Level 1</a>
-
-                <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
-                   href="#list-profile" role="tab" aria-controls="profile"><strong>Train Animal</strong><br> Level 2</a>
-
-                <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list"
-                   href="#list-messages" role="tab" aria-controls="messages"><strong>Train Animal</strong><br> Level 3</a>
+                   href="#animal-{{ animal.name }}" role="tab" aria-controls="home"><strong>{{ animal.name }}</strong><br> Level {{ animal.id }}</a>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -34,32 +39,36 @@
     <div class="row">
         <div class="col">
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                    <h3>Level 1</h3>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-                        of type and scrambled it to make a type specimen book.</p>
-                    <a href="{{ url_for('hero.train', id=1) }}" class="btn btn-outline-info">Start Training</a>
-                </div>
+                {% for animal in animals %}
+                <div class="tab-pane fade" id="animal-{{ animal.name }}" role="tabpanel" aria-labelledby="list-home-list">
+                    <h3>Level {{ animal.id }} - {{ animal.name }}</h3>
+                    <p>{{ animal.description }}</p>
+                    <hr class="w-25 m-0 py-3">
+                    <h5>Animal Stats</h5>
 
-                <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-                    <h3>Level 2</h3>
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
-                        classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a L
-                        atin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin
-                        words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in
-                        classical literature, discovered the undoubtable source.</p>
-                    <a href="{{ url_for('hero.train', id=2) }}" class="btn btn-outline-info">Start Training</a>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td class="col-2">HP</td>
+                                <td>{{ animal.hp }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-2">Damage</td>
+                                <td>{{ (animal.attack_point * 0.5)|round|int }}-{{ (animal.attack_point * 1.26)|round|int }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-2">Experience given</td>
+                                <td>{{ (animal.exp_given * 0.76)|round|int }}-{{ (animal.exp_given * 1.26)|round|int }}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-2">Time</td>
+                                <td>xXx</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="{{ url_for('hero.train', id=animal.id) }}" class="btn btn-outline-info">Start Training</a>
                 </div>
-
-                <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
-                    <h3>Level 3</h3>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page
-                        when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-                        distribution of letters, as opposed to using 'Content here, content here', making it look like
-                        readable English.</p>
-                    <a href="{{ url_for('hero.train', id=3) }}" class="btn btn-outline-info">Start Training</a>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
