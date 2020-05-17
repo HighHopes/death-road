@@ -57,12 +57,12 @@
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Messages {% if get_unread_msgs > 0 %}({{ get_unread_msgs }}){% endif %}
+                                Messages {% if get_unread_msgs > 0 %}<span class="badge badge-light">{{ get_unread_msgs }}</span>{% endif %}
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="messagesDropdown">
                                 <a class="dropdown-item" href="{{ url_for('msgs.msg_send') }}">Send Message</a>
-                                <a class="dropdown-item" href="{{ url_for('msgs.msg_inbox') }}">Inbox</a>
+                                <a class="dropdown-item" href="{{ url_for('msgs.msg_inbox') }}">Inbox {% if get_unread_msgs > 0 %}<span class="badge badge-dark">{{ get_unread_msgs }}</span>{% endif %}</a>
                                 <a class="dropdown-item" href="{{ url_for('msgs.msg_outbox') }}">Outbox</a>
                             </div>
                         </li>

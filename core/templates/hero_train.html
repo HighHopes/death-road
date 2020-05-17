@@ -12,6 +12,15 @@
 
     <div class="row mt-5">
         <div class="col">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} text-center">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <p>
                 <button class="btn btn-block btn-info" type="button" data-toggle="collapse"
                         data-target="#fullBattleReport" aria-expanded="false" aria-controls="fullBattleReport">

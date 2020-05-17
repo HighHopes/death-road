@@ -71,6 +71,9 @@ class Hero(db.Model):
     alive = Column(Integer)  # Check if hero is Death (0), Reviving (1), Alive (2)
     death_check = Column(DateTime)  # Time when the hero was revived
     revive_time = Column(Integer)  # seconds needed to revive the hero after the revive button is pressed
+    action = Column(Integer)  # Hero current situation: Waiting (0), Returning from battle (1)
+    return_from_action = Column(DateTime)  # Tine when the action (example battle) took place
+    return_seconds = Column(Integer)  # Seconds until the hero will be home
     attack_point = Column(Integer)  # attack points needed to calculate damage
 
 
@@ -87,3 +90,4 @@ class AnimalsTraining(db.Model):
     hp = Column(Integer)  # HP of the animal
     attack_point = Column(Integer)  # attack points of the animal
     exp_given = Column(Integer)  # experience given to the hero when animal is dead
+    duration = Column(Integer)  # second needed to return home from current mission

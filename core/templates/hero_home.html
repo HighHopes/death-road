@@ -49,6 +49,16 @@
                     </tr>
 
                     <tr>
+                        <th scope="row">Action</th>
+
+                        {% if hero.action == 1 %}
+                        <td class="text-warning">Returning</td>
+                        {% else %}
+                        <td class="text-info">Waiting...</td>
+                        {% endif %}
+                    </tr>
+
+                    <tr>
                         <th scope="row">Health</th>
                         <td>{{ hero.hp }}/{{ hero.hp_max }}</td>
                     </tr>

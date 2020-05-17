@@ -21,6 +21,21 @@
     </div>
 
     <div class="row">
+        <div class="col-4">Action:</div>
+
+        {% if hero.action == 1 %}
+        <div class="col-8 text-warning">Returning</div>
+        {% else %}
+        <div class="col-8 text-info">Waiting...</div>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-4">Level:</div>
+        <div class="col-8">{{ hero.level }}</div>
+    </div>
+
+    <div class="row">
         <div class="col-4">HP:</div>
         <div class="col-8">{{ hero.hp }}/{{ hero.hp_max }}</div>
     </div>
@@ -39,6 +54,13 @@
         <div class="row pt-5">
             <p>Your hero will be revived after this time:</p>
             <p>{{ reviving_time.strftime("%d.%m.%Y %H:%M:%S") }}</p>
+        </div>
+    {% endif %}
+
+    {% if hero.action == 1 %}
+        <div class="row pt-5">
+            <p>Your hero will arrive home after:</p>
+            <p>{{ returning_time.strftime("%d.%m.%Y %H:%M:%S") }}</p>
         </div>
     {% endif %}
 </div>

@@ -1,5 +1,5 @@
 from core import db
-from core.models import Hero
+from core.models import Hero, AnimalsTraining
 
 from datetime import datetime
 
@@ -75,4 +75,33 @@ def revive_hero(current_acc_id):
     if time_passed >= revive.revive_time:
         revive.alive = 2
         revive.hp = revive.hp_max
+        db.session.commit()
+
+
+def level_up(current_acc_id):
+    """
+    Calculates when hero is leveling up based on the current experience and the next level requirements exp.
+    If the hero current exp is higher than the max exp then the hero levels up with 1 unit and current exp is reseted
+    to 0. Next exp is incremented by percentage multiplication based on the previous exp needed.
+
+    :param current_acc_id:  gets the current id for the account [current_user.id]
+    :return:
+    """
+
+    hero_lvl = Hero.query.filter_by(acc_id=current_acc_id).first()
+
+    hero_lvl.level += 1
+    hero_lvl.current_exp = 0
+    hero_lvl.next_lvl_exp = int(round(hero_lvl.next_lvl_exp * 1.10))
+
+    db.session.commit()
+
+
+def battle_return_time(current_acc_id):
+    hero = Hero.query.filter_by(acc_id=current_acc_id).first()
+
+    time_passed = deltatime(datetime.now(), hero.return_from_action)
+
+    if time_passed >= hero.return_seconds:
+        hero.action = 0
         db.session.commit()
