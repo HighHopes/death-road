@@ -16,7 +16,7 @@
 
     <div class="row pt-3">
         <div class="col-md-2 text-center" style="font-size: 12rem;">
-        {% if hero.gender == False %}
+        {% if hero[0].gender == False %}
             <i class="fas fa-male"></i>
         {% else %}
             <i class="fas fa-female"></i>
@@ -24,24 +24,24 @@
         </div>
 
         <div class="col-md-4 py-3">
-            <table class="table table-hover ml-5">
+            <table class="table ml-5">
                 <tbody>
                     <tr>
                         <th scope="row">Name</th>
-                        <td>{{ hero.name }}</td>
+                        <td>{{ hero[0].name }}</td>
                     </tr>
 
                     <tr>
                         <th scope="row">Level</th>
-                        <td>{{ hero.level }}</td>
+                        <td>{{ hero[0].level }}</td>
                     </tr>
 
                     <tr>
                         <th scope="row">Status</th>
 
-                        {% if hero.alive == 2 %}
+                        {% if hero[0].alive == 2 %}
                         <td class="text-success">Alive</td>
-                        {% elif hero.alive == 1 %}
+                        {% elif hero[0].alive == 1 %}
                         <td class="text-warning">Reviving</td>
                         {% else %}
                         <td class="text-danger">Dead</td>
@@ -51,46 +51,87 @@
                     <tr>
                         <th scope="row">Action</th>
 
-                        {% if hero.action == 1 %}
-                        <td class="text-warning">Returning</td>
+                        {% if hero[0].alive == 0 %}
+                        <td class="text-danger">Dead</td>
+                        {% elif hero[0].alive == 1 %}
+                        <td class="text-warning">Reviving</td>
                         {% else %}
-                        <td class="text-info">Waiting...</td>
+                            {% if hero[0].action == 1 %}
+                            <td class="text-warning">Returning</td>
+                            {% else %}
+                            <td class="text-info">Waiting...</td>
+                            {% endif %}
                         {% endif %}
                     </tr>
 
                     <tr>
                         <th scope="row">Health</th>
-                        <td>{{ hero.hp }}/{{ hero.hp_max }}</td>
+                        <td data-toggle="tooltip" data-placement="bottom" title="{% if hero[0].hp < max_hp %}HP will be full at {{ hp_full_time.strftime('%H:%M:%S') }}{% else %}HP is Full{% endif %}">{{ hero[0].hp }}/{{ max_hp }}</td>
                     </tr>
 
                     <tr>
                         <th scope="row">Experience</th>
-                        <td>{{ hero.current_exp }}</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">Exp needed for next level</th>
-                        <td>{{ hero.next_lvl_exp }}</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">Attack Points</th>
-                        <td>{{ hero.attack_point }}</td>
+                        <td data-toggle="tooltip" data-placement="bottom" title="{{ hero[0].next_lvl_exp - hero[0].current_exp }} is the amount of experience needed for the next level">{{ hero[0].current_exp }}/{{ hero[0].next_lvl_exp }}</td>
                     </tr>
 
                     <tr>
                         <th scope="row">Health Regeneration Rate (HP/sec)</th>
-                        <td>{{ hero.hp_regen_rate }}</td>
+                        <td>{{ hero[0].hp_regen_rate }}</td>
                     </tr>
 
                     <tr>
                         <td colspan="2">
                             <form method="post">
                                 {{ form.hidden_tag() }}
-                                {% if hero.alive == 2 %}
+                                {% if hero[0].alive == 2 %}
                                 {{ form.h_kill(class="btn btn-outline-warning btn-lg btn-block") }}
-                                {% elif hero.alive == 0 %}
+                                {% elif hero[0].alive == 0 %}
                                 {{ form.h_revive(class="btn btn-outline-success btn-lg btn-block") }}
+                                {% else %}
+                                <a href="#" class="btn btn-outline-danger btn-lg btn-block disabled">Kill Hero</a>
+                                {% endif %}
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table ml-5">
+                <tbody>
+                    <tr>
+                        <th scope="row">Available Points:</th>
+                        <td>{{ hero[1].unused_points }}</td>
+                        {% if hero[1].unused_points > 0 %}
+                        <td></td>
+                        {% endif %}
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Attack Points</th>
+                        <td>{{ hero[1].attack_point }}</td>
+                        {% if hero[1].unused_points > 0 %}
+                        <td><a href="#" class="h4 text-info"><i class="far fa-minus-square"></i></a>
+                        <a href="#" class="h4 text-info"><i class="far fa-plus-square"></i></a></td>
+                        {% endif %}
+                    </tr>
+
+                    <tr>
+                        <th scope="row">HP Points</th>
+                        <td>{{ hero[1].hp_point }}</td>
+                        {% if hero[1].unused_points > 0 %}
+                        <td><a href="#" class="h4 text-info"><i class="far fa-minus-square"></i></a>
+                        <a href="#" class="h4 text-info"><i class="far fa-plus-square"></i></a></td>
+                        {% endif %}
+                    </tr>
+
+                    <tr>
+                        <td colspan="3">
+                            <form method="post">
+                                {{ form.hidden_tag() }}
+                                {% if hero[1].unused_points > 0 %}
+                                {{ form.h_upd_points(class="btn btn-outline-success btn-lg btn-block") }}
+                                {% else %}
+                                <a href="#" class="btn btn-outline-danger btn-lg btn-block disabled">Save</a>
                                 {% endif %}
                             </form>
                         </td>
@@ -119,7 +160,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                            <a href="{{ url_for('hero.hero_delete') }}" class="btn btn-danger" role="button">Permanently Delete</a>
+                            <a href="{{ url_for('hero_main.hero_delete') }}" class="btn btn-danger" role="button">Permanently Delete</a>
                         </div>
                     </div>
                 </div>

@@ -25,7 +25,8 @@ def create_app():
     from core.statistics.routes import stats
     from core.errors.handlers import errors
     from core.messages.routes import msgs
-    from core.hero.routes import hero
+    from core.hero_main.routes import hero
+    from core.hero_train.routes import training
 
     app.register_blueprint(main)
     app.register_blueprint(users)
@@ -33,5 +34,6 @@ def create_app():
     app.register_blueprint(errors)
     app.register_blueprint(msgs)
     app.register_blueprint(hero)
+    app.register_blueprint(training)
 
     return app

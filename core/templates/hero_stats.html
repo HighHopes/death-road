@@ -11,9 +11,9 @@
     <div class="row">
         <div class="col-4">Status:</div>
 
-        {% if hero.alive == 2 %}
+        {% if hero[0].alive == 2 %}
         <div class="col-8 text-success">Alive</div>
-        {% elif hero.alive == 1 %}
+        {% elif hero[0].alive == 1 %}
         <div class="col-8 text-warning">Reviving</div>
         {% else %}
         <div class="col-8 text-danger">Dead</div>
@@ -23,41 +23,47 @@
     <div class="row">
         <div class="col-4">Action:</div>
 
-        {% if hero.action == 1 %}
-        <div class="col-8 text-warning">Returning</div>
+        {% if hero[0].alive == 0 %}
+        <div class="col-8 text-danger">Dead</div>
+        {% elif hero[0].alive == 1 %}
+        <div class="col-8 text-warning">Reviving</div>
         {% else %}
-        <div class="col-8 text-info">Waiting...</div>
+            {% if hero[0].action == 1 %}
+            <div class="col-8 text-warning">Returning</div>
+            {% else %}
+            <div class="col-8 text-info">Waiting...</div>
+            {% endif %}
         {% endif %}
     </div>
 
     <div class="row">
         <div class="col-4">Level:</div>
-        <div class="col-8">{{ hero.level }}</div>
+        <div class="col-8">{{ hero[0].level }}</div>
     </div>
 
     <div class="row">
         <div class="col-4">HP:</div>
-        <div class="col-8">{{ hero.hp }}/{{ hero.hp_max }}</div>
+        <div class="col-8" data-toggle="tooltip" data-placement="bottom" title="{% if hero[0].hp < max_hp %}HP will be full at {{ hp_full_time.strftime('%H:%M:%S') }}{% else %}HP is Full{% endif %}">{{ hero[0].hp }}/{{ max_hp }}</div>
     </div>
 
     <div class="row">
         <div class="col-4">EXP:</div>
-        <div class="col-8">{{ hero.current_exp }}/{{ hero.next_lvl_exp }}</div>
+        <div class="col-8" data-toggle="tooltip" data-placement="bottom" title="{{ hero[0].next_lvl_exp - hero[0].current_exp }} is the amount of experience needed for level up">{{ hero[0].current_exp }}/{{ hero[0].next_lvl_exp }}</div>
     </div>
 
     <div class="row">
         <div class="col-4">Damage:</div>
-        <div class="col-8">{{ (hero.attack_point * 0.5)|round|int }}-{{ (hero.attack_point * 1.26)|round|int }}</div>
+        <div class="col-8">{{ (hero[1].attack_point * 0.5)|round|int }}-{{ (hero[1].attack_point * 1.26)|round|int }}</div>
     </div>
 
-    {% if hero.alive == 1 %}
+    {% if hero[0].alive == 1 %}
         <div class="row pt-5">
             <p>Your hero will be revived after this time:</p>
             <p>{{ reviving_time.strftime("%d.%m.%Y %H:%M:%S") }}</p>
         </div>
     {% endif %}
 
-    {% if hero.action == 1 %}
+    {% if hero[0].action == 1 %}
         <div class="row pt-5">
             <p>Your hero will arrive home after:</p>
             <p>{{ returning_time.strftime("%d.%m.%Y %H:%M:%S") }}</p>

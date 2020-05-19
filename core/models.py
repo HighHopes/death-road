@@ -57,23 +57,35 @@ class Hero(db.Model):
 
     __tablename__ = "hero"
 
-    acc_id = Column(Integer, primary_key=True)  # hero id connected to account id
-    name = Column(String(16), unique=True)  # name of the hero
+    hid = Column(Integer, primary_key=True)  # hero id connected to account id
+    name = Column(String(16), unique=True)  # name of the hero_main
     gender = Column(Boolean)  # 0 - male / 1 - female
-    date_created = Column(DateTime)  # date created the hero
-    level = Column(Integer)  # current level of the hero
-    current_exp = Column(Integer)  # current experience of hero
+    date_created = Column(DateTime)  # date created the hero_main
+    level = Column(Integer)  # current level of the hero_main
+    level_date = Column(DateTime)  # time when the hero leveled up. Used in statistics.
+    current_exp = Column(Integer)  # current experience of hero_main
     next_lvl_exp = Column(Integer)  # exp needed for next level
-    hp = Column(Integer)  # current hero health HP
-    hp_max = Column(Integer)  # current hero health HP
+    hp = Column(Integer)  # current hero_main health HP
     hp_regen_rate = Column(Integer)  # hp regeneration per second
     hp_check_regen = Column(DateTime)  # used to calculate the regenerated hp over time
-    alive = Column(Integer)  # Check if hero is Death (0), Reviving (1), Alive (2)
-    death_check = Column(DateTime)  # Time when the hero was revived
-    revive_time = Column(Integer)  # seconds needed to revive the hero after the revive button is pressed
+    alive = Column(Integer)  # Check if hero_main is Death (0), Reviving (1), Alive (2)
+    death_check = Column(DateTime)  # Time when the hero_main was revived
+    revive_time = Column(Integer)  # seconds needed to revive the hero_main after the revive button is pressed
     action = Column(Integer)  # Hero current situation: Waiting (0), Returning from battle (1)
     return_from_action = Column(DateTime)  # Tine when the action (example battle) took place
-    return_seconds = Column(Integer)  # Seconds until the hero will be home
+    return_seconds = Column(Integer)  # Seconds until the hero_main will be home
+
+
+class HeroPoints(db.Model):
+    """
+    Hero points.
+    """
+
+    __tablename__ = "hero_points"
+
+    hpid = Column(Integer, primary_key=True)  # hero_main id connected to account id
+    unused_points = Column(Integer)  # unused points when hero levels up
+    hp_point = Column(Integer)  # current hero_main health HP
     attack_point = Column(Integer)  # attack points needed to calculate damage
 
 
@@ -89,5 +101,5 @@ class AnimalsTraining(db.Model):
     description = Column(Text)  # short description for the animal
     hp = Column(Integer)  # HP of the animal
     attack_point = Column(Integer)  # attack points of the animal
-    exp_given = Column(Integer)  # experience given to the hero when animal is dead
+    exp_given = Column(Integer)  # experience given to the hero_main when animal is dead
     duration = Column(Integer)  # second needed to return home from current mission

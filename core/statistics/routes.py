@@ -11,7 +11,9 @@ stats = Blueprint("stats", __name__)
 @stats.route("/statistics")
 @login_required
 def statistics():
-    stats = db.session.query(User, Hero).outerjoin(Hero, User.id == Hero.acc_id).order_by(Hero.level.desc())
+    stats = db.session.query(User, Hero).\
+        outerjoin(Hero, User.id == Hero.hid).\
+        order_by(Hero.current_exp.desc(), Hero.level_date.asc(), Hero.name.desc())
 
     # Get the number of unread messages
     get_unread_msgs = unread_msgs(current_user.username)

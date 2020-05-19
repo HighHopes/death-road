@@ -13,3 +13,4 @@ class CreateHeroForm(FlaskForm):
 class ReviveHeroForm(FlaskForm):
     h_revive = SubmitField("Revive Hero")
     h_kill = SubmitField("Kill Hero")
+    h_upd_points = SubmitField("Save")

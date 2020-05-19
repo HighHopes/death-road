@@ -4,13 +4,13 @@
 <div class="col-lg-8">
     <h4>Training Zone</h4>
 
-    {% if hero.alive == 0 %}
+    {% if hero[0].alive == 0 %}
     <div class="row pt-5 pb-3">
         <div class="col">
             <h5>Your hero is currently dead.</h5>
         </div>
     </div>
-    {% elif hero.alive == 1 %}
+    {% elif hero[0].alive == 1 %}
     <div class="row pt-5 pb-3">
         <div class="col">
             <h5>Your hero is currently reviving. Wait...</h5>
@@ -62,11 +62,11 @@
                             </tr>
                             <tr>
                                 <td class="col-2">Time</td>
-                                <td>xXxxXx</td>
+                                <td>{{ animal.duration }} seconds</td>
                             </tr>
                         </tbody>
                     </table>
-                    <a href="{{ url_for('hero.train', id=animal.id) }}" class="btn btn-outline-info">Start Training</a>
+                    <a href="{{ url_for('hero_train.train', id=animal.id) }}" class="btn {% if hero[0].action==0 %}btn-outline-info{% else %}btn-outline-danger disabled{% endif %}">Start Training</a>
                 </div>
                 {% endfor %}
             </div>
